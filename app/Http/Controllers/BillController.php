@@ -2,23 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bill;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class BillController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index() : Response
     {
-        //
+        $bills = Bill::all();
+        return Inertia::render('bills/index', compact('bills'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create() : Response
     {
         return Inertia::render('bills/create');
     }
@@ -26,9 +30,10 @@ class BillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request) : RedirectResponse
     {
-        //
+        $bill = Bill::create($request->all());
+        return to_route('bills.index');
     }
 
     /**

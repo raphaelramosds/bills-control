@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('amount', 8, 2);
             $table->date('expiration_date');
-            $table->date('payment_date');
-            $table->string('notes');
+            $table->date('payment_date')->nullable();
+            $table->string('notes')->nullable();
             $table->timestamps();
         });
     }
