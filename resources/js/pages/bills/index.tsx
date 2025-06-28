@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Ellipsis } from 'lucide-react';
 import React, { FormEventHandler } from 'react';
+import { asCurrency, asDate } from '@/lib/utils';
 
 export default function Index({ ...props }) {
 
@@ -42,9 +43,9 @@ export default function Index({ ...props }) {
                         {props.bills.map(bill => (
                             <tr key={bill.id}>
                                 <td>{bill.name}</td>
-                                <td>{bill.amount}</td>
-                                <td>{bill.expiration_date}</td>
-                                <td>{bill.payment_date}</td>
+                                <td>{asCurrency(bill.amount)}</td>
+                                <td>{asDate(bill.expiration_date)}</td>
+                                <td>{asDate(bill.payment_date)}</td>
                                 <td>{bill.notes}</td>
                                 <td>
                                     <DropdownMenu>
