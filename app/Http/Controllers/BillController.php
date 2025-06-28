@@ -13,10 +13,20 @@ class BillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : Response
+    public function index(Request $request) : Response
     {
-        $bills = Bill::all();
-        return Inertia::render('bills/index', compact('bills'));
+        $bills = Bill::query();
+
+        if ($request->has('month')) {
+            [$year, $month] = explode('-', $request->get('month'));
+            $bills->whereYear('expiration_date', $year)
+                ->whereMonth('expiration_date', $month);
+        }
+
+        return Inertia::render('bills/index', [
+            'bills' => $bills->get(),
+            'months' => Bill::months(),
+        ]);
     }
 
     /**
