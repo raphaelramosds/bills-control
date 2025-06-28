@@ -60,6 +60,7 @@ export default function Index({ ...props }) {
                     Cadastrar
                 </Link>
                 {props.bills.length > 0 ?
+                    
                     <table>
                         <tbody>
                         <tr>
@@ -71,7 +72,7 @@ export default function Index({ ...props }) {
                             <th></th>
                         </tr>
                         {props.bills.map(bill => (
-                            <tr key={bill.id}>
+                            <tr key={bill.id} className={bill.payment_date ? 'text-green-400' : 'text-red-400'}>
                                 <td>{bill.name}</td>
                                 <td>{asCurrency(bill.amount)}</td>
                                 <td>{asDate(bill.expiration_date)}</td>
