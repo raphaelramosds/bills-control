@@ -4,9 +4,9 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@headlessui/react';
 import { Button } from '@/components/ui/button';
-import { InputNumberFormat, unformat } from '@react-input/number-format';
 import { FormEventHandler } from 'react';
 import { LoaderCircle } from 'lucide-react';
+import { NumericFormat } from 'react-number-format';
 
 type BillForm = {
     name: string,
@@ -16,20 +16,27 @@ type BillForm = {
     notes?: string
 };
 
-export default function Create() {
-    const { data, setData, post, processing, errors, reset } = useForm<Required<BillForm>>({
-        name: '',
-        amount: 0.0,
-        expiration_date: '',
-        payment_date: '',
-        notes: ''
+export default function Form({ ...props }) {
+    const { data, setData, post, patch, processing, errors, reset } = useForm<Required<BillForm>>({
+        name: props.bill?.name ?? '',
+        amount: props.bill?.amount ?? '',
+        expiration_date: props.bill?.expiration_date ?? '',
+        payment_date: props.bill?.payment_date ?? '',
+        notes: props.bill?.notes ?? ''
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route('bills.store'), {
-            onFinish: () => console.log('Dados da conta submetidos')
-        });
+
+        if (props.bill) {
+            patch(route('bills.update', props.bill.id), {
+                onFinish: () => console.log('Dados da conta atualizados')
+            })
+        } else {
+            post(route('bills.store'), {
+                onFinish: () => console.log('Dados da conta submetidos')
+            });
+        }
     };
 
     return (
@@ -43,16 +50,19 @@ export default function Create() {
                            required
                            placeholder="Descreva esta conta"
                            onChange={(e) => setData('name', e.target.value)}
+                           value={data.name}
                     />
 
                     <Label htmlFor="amount">Valor</Label>
-                    <InputNumberFormat
+                    <NumericFormat
                         id="amount"
-                        locales="pt-BR"
-                        maximumFractionDigits={2}
-                        format="currency"
-                        currency="BRL"
-                        onChange={(e) => setData('amount', unformat(e.target.value))}
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        allowLeadingZeros
+                        allowNegative={false}
+                        decimalScale={2}
+                        value={data.amount}
+                        onValueChange={(values) => setData('amount', values.floatValue)}
                     />
 
                     <Label htmlFor="expiration_date">Vencimento</Label>
@@ -60,6 +70,7 @@ export default function Create() {
                         id="expiration_date"
                         type="date"
                         onChange={(e) => setData('expiration_date', e.target.value)}
+                        value={data.expiration_date}
                     />
 
                     <Label htmlFor="payment_date">Data de pagamento</Label>
@@ -67,12 +78,14 @@ export default function Create() {
                         id="payment_date"
                         type="date"
                         onChange={(e) => setData('payment_date', e.target.value)}
+                        value={data.payment_date}
                     />
 
                     <Label htmlFor="notes">Anotações</Label>
                     <Textarea
                         id="notes"
                         onChange={(e) => setData('notes', e.target.value)}
+                        value={data.notes}
                     />
 
                     <Button type="submit" disabled={processing}>

@@ -24,7 +24,7 @@ class BillController extends Controller
      */
     public function create() : Response
     {
-        return Inertia::render('bills/create');
+        return Inertia::render('bills/form');
     }
 
     /**
@@ -47,9 +47,10 @@ class BillController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id) : Response
     {
-        //
+        $bill = Bill::findOrFail($id);
+        return Inertia::render('bills/form', compact('bill'));
     }
 
     /**
@@ -57,7 +58,9 @@ class BillController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->update($request->all());
+        return to_route('bills.index');
     }
 
     /**
@@ -65,6 +68,8 @@ class BillController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $bill = Bill::findOrFail($id);
+        $bill->delete();
+        return to_route('bills.index');
     }
 }

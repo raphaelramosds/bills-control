@@ -1,7 +1,21 @@
 import GuestLayout from '@/layouts/guest-layout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu';
+import { Ellipsis } from 'lucide-react';
+import React, { FormEventHandler } from 'react';
 
 export default function Index({ ...props }) {
+
+    const { delete: destroy } = useForm();
+
+    const handleDelete = (id: number) => {
+        destroy(route('bills.destroy', id));
+    };
 
     return (
         <GuestLayout>
@@ -26,16 +40,36 @@ export default function Index({ ...props }) {
                             <th></th>
                         </tr>
                         {props.bills.map(bill => (
-                            <>
-                                <tr>
-                                    <td>{bill.name}</td>
-                                    <td>{bill.amount}</td>
-                                    <td>{bill.expiration_date}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Ações</td>
-                                </tr>
-                            </>
+                            <tr key={bill.id}>
+                                <td>{bill.name}</td>
+                                <td>{bill.amount}</td>
+                                <td>{bill.expiration_date}</td>
+                                <td>{bill.payment_date}</td>
+                                <td>{bill.notes}</td>
+                                <td>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Ellipsis className="ml-auto size-4" />
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent
+                                            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                                            align="end"
+                                        >
+                                            <DropdownMenuItem
+                                                onSelect={() => router.visit(route('bills.edit', bill.id))}
+                                            >
+                                                Editar
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem
+                                                className="text-red-500"
+                                                onSelect={() => handleDelete(bill.id)}
+                                            >
+                                                Excluir
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </td>
+                            </tr>
                         ))}
                         </tbody>
                     </table>

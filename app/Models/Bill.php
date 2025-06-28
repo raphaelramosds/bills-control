@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 
 class Bill extends Model
@@ -21,4 +22,9 @@ class Bill extends Model
         'expiration_date' => 'date',
         'payment_date' => 'date',
     ];
+
+    protected function serializeDate(DateTimeInterface $date)
+    {
+        return $date->format('Y-m-d');
+    }
 }
