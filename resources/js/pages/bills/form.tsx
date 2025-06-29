@@ -42,58 +42,73 @@ export default function Form({ ...props }) {
     return (
         <GuestLayout>
             <Head title="Cadastrar conta" />
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
+            <main className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
                 <form className="flex flex-col" onSubmit={submit}>
-                    <Label htmlFor="name">Descrição</Label>
-                    <Input id="name"
-                           type="text"
-                           required
-                           placeholder="Descreva esta conta"
-                           onChange={(e) => setData('name', e.target.value)}
-                           value={data.name}
-                    />
+                    <div className="grid gap-6 grid-cols-2 grid-rows-3">
 
-                    <Label htmlFor="amount">Valor</Label>
-                    <NumericFormat
-                        id="amount"
-                        thousandSeparator="."
-                        decimalSeparator=","
-                        allowLeadingZeros
-                        allowNegative={false}
-                        decimalScale={2}
-                        value={data.amount}
-                        onValueChange={(values) => setData('amount', values.floatValue)}
-                    />
+                        <div className="grid gap-2">
+                            <Label htmlFor="name">Descrição</Label>
+                            <Input id="name"
+                                   type="text"
+                                   required
+                                   placeholder="Descreva esta conta"
+                                   onChange={(e) => setData('name', e.target.value)}
+                                   value={data.name}
+                            />
+                        </div>
 
-                    <Label htmlFor="expiration_date">Vencimento</Label>
-                    <Input
-                        id="expiration_date"
-                        type="date"
-                        onChange={(e) => setData('expiration_date', e.target.value)}
-                        value={data.expiration_date}
-                    />
+                        <div className="grid gap-2">
+                            <Label htmlFor="amount">Valor</Label>
+                            <NumericFormat
+                                id="amount"
+                                className='rounded border'
+                                thousandSeparator="."
+                                decimalSeparator=","
+                                allowLeadingZeros
+                                allowNegative={false}
+                                decimalScale={2}
+                                value={data.amount}
+                                onValueChange={(values) => setData('amount', values.floatValue)}
+                            />
+                        </div>
 
-                    <Label htmlFor="payment_date">Data de pagamento</Label>
-                    <Input
-                        id="payment_date"
-                        type="date"
-                        onChange={(e) => setData('payment_date', e.target.value)}
-                        value={data.payment_date}
-                    />
+                        <div className="grid gap-2">
+                            <Label htmlFor="expiration_date">Vencimento</Label>
+                            <Input
+                                id="expiration_date"
+                                type="date"
+                                onChange={(e) => setData('expiration_date', e.target.value)}
+                                value={data.expiration_date}
+                            />
+                        </div>
 
-                    <Label htmlFor="notes">Anotações</Label>
-                    <Textarea
-                        id="notes"
-                        onChange={(e) => setData('notes', e.target.value)}
-                        value={data.notes}
-                    />
+                        <div className="grid gap-2">
+                            <Label htmlFor="payment_date">Data de pagamento</Label>
+                            <Input
+                                id="payment_date"
+                                type="date"
+                                onChange={(e) => setData('payment_date', e.target.value)}
+                                value={data.payment_date}
+                            />
+                        </div>
 
-                    <Button type="submit" disabled={processing}>
+                        <div className="grid gap-2 col-span-2">
+                            <Label htmlFor="notes">Anotações</Label>
+                            <Textarea
+                                id="notes"
+                                className="border rounded"
+                                onChange={(e) => setData('notes', e.target.value)}
+                                value={data.notes}
+                            />
+                        </div>
+                    </div>
+
+                    <button type="submit" disabled={processing} className='w-[180px] cursor-pointer mt-4 rounded border p-1'>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Salvar
-                    </Button>
+                    </button>
                 </form>
-            </div>
+            </main>
         </GuestLayout>
     );
 }
