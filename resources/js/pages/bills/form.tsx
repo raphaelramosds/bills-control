@@ -3,7 +3,6 @@ import { Head, useForm } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@headlessui/react';
-import { Button } from '@/components/ui/button';
 import { FormEventHandler } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { NumericFormat } from 'react-number-format';
@@ -31,7 +30,7 @@ export default function Form({ ...props }) {
         if (props.bill) {
             patch(route('bills.update', props.bill.id), {
                 onFinish: () => console.log('Dados da conta atualizados')
-            })
+            });
         } else {
             post(route('bills.store'), {
                 onFinish: () => console.log('Dados da conta submetidos')
@@ -48,12 +47,14 @@ export default function Form({ ...props }) {
 
                         <div className="grid gap-2">
                             <Label htmlFor="name">Descrição</Label>
-                            <Input id="name"
-                                   type="text"
-                                   required
-                                   placeholder="Descreva esta conta"
-                                   onChange={(e) => setData('name', e.target.value)}
-                                   value={data.name}
+                            <input
+                                id="name"
+                                type="text"
+                                className="rounded border pl-2"
+                                required
+                                placeholder="Descreva esta conta"
+                                onChange={(e) => setData('name', e.target.value)}
+                                value={data.name}
                             />
                         </div>
 
@@ -61,7 +62,9 @@ export default function Form({ ...props }) {
                             <Label htmlFor="amount">Valor</Label>
                             <NumericFormat
                                 id="amount"
-                                className='rounded border'
+                                required
+                                placeholder="0,00"
+                                className="rounded border pl-2"
                                 thousandSeparator="."
                                 decimalSeparator=","
                                 allowLeadingZeros
@@ -74,39 +77,49 @@ export default function Form({ ...props }) {
 
                         <div className="grid gap-2">
                             <Label htmlFor="expiration_date">Vencimento</Label>
-                            <Input
-                                id="expiration_date"
-                                type="date"
-                                onChange={(e) => setData('expiration_date', e.target.value)}
-                                value={data.expiration_date}
+                            <input id="expiration_date"
+                                   type="date"
+                                   className="rounded border pl-2"
+                                   onChange={(e) => setData('expiration_date', e.target.value)}
+                                   value={data.expiration_date}
                             />
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="payment_date">Data de pagamento</Label>
-                            <Input
-                                id="payment_date"
-                                type="date"
-                                onChange={(e) => setData('payment_date', e.target.value)}
-                                value={data.payment_date}
+                            <Label htmlFor="expiration_date">Data de pagamento</Label>
+                            <input id="payment_date"
+                                   type="date"
+                                   className="rounded border pl-2"
+                                   onChange={(e) => setData('payment_date', e.target.value)}
+                                   value={data.payment_date}
                             />
                         </div>
 
                         <div className="grid gap-2 col-span-2">
                             <Label htmlFor="notes">Anotações</Label>
-                            <Textarea
-                                id="notes"
-                                className="border rounded"
-                                onChange={(e) => setData('notes', e.target.value)}
-                                value={data.notes}
+                            <textarea id="notes"
+                                      className="border rounded p-1"
+                                      onChange={(e) => setData('notes', e.target.value)}
+                                      value={data.notes}
                             />
                         </div>
                     </div>
 
-                    <button type="submit" disabled={processing} className='w-[180px] cursor-pointer mt-4 rounded border p-1'>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-                        Salvar
+                    <button
+                        type="submit"
+                        disabled={processing}
+                        className={`
+                            w-[180px] cursor-pointer mt-4 rounded border p-1
+                            ${processing ? 'flex items-center justify-center' : ''}
+                        `}
+                    >
+                        {processing ? (
+                            <LoaderCircle className="h-4 w-4 animate-spin" />
+                        ) : (
+                            'Salvar'
+                        )}
                     </button>
+
                 </form>
             </main>
         </GuestLayout>
