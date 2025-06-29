@@ -76,12 +76,13 @@ export default function Index({ ...props }) {
                                         align="center"
                                     >
                                         <DropdownMenuItem
+                                            className="cursor-pointer"
                                             onSelect={() => router.visit(route('bills.edit', bill.id))}
                                         >
                                             Editar
                                         </DropdownMenuItem>
                                         <DropdownMenuItem
-                                            className="text-red-500"
+                                            className="text-red-500 cursor-pointer"
                                             onSelect={() => handleDelete(bill.id)}
                                         >
                                             Excluir
@@ -94,7 +95,7 @@ export default function Index({ ...props }) {
                                 <span className="text-sm italic">Vence em {asDate(bill.expiration_date)}</span>
                             </div>
                             <div className="text-right">
-                                <div className={`font-bold text-${bill.payment_date ? 'sky' : 'red'}-500`}>
+                                <div className={`font-bold ${bill.payment_date ? 'text-sky-500' : 'text-red-500'}`}>
                                     <span>{asCurrency(bill.amount)}</span>
                                 </div>
                                 <div className="flex items-center">
