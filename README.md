@@ -2,6 +2,8 @@
 
 Web system to control my bills
 
+![Demo](./public/demo.png)
+
 ## Technologies
 
 - React.JS
