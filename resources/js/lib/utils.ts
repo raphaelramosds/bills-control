@@ -14,10 +14,9 @@ export function asCurrency(number: number) {
 export function asDate(str: string | null | undefined) {
     if (!str) return null;
 
-    // Validate YYYY-mm-dd
-    if (!str.match(/^\d{4}-\d{2}-\d{2}$/)) return null;
+    const safeDate = str.replace(/-/g, '/');
+    const date = new Date(safeDate);
 
-    const date = new Date(str);
     return date.toLocaleDateString('pt-BR');
 }
 
