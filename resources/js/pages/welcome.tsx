@@ -1,5 +1,6 @@
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
+import AppearanceToggleTab from '@/components/appearance-tabs';
 
 export default function Welcome() {
     const { auth } = usePage<SharedData>().props;
@@ -28,6 +29,8 @@ export default function Welcome() {
                                 >
                                     Contas
                                 </Link>
+                                <AppearanceToggleTab/>
+
                                 {/*<Link*/}
                                 {/*    href={route('login')}*/}
                                 {/*    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"*/}
