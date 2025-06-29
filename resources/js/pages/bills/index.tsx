@@ -91,11 +91,11 @@ export default function Index({ ...props }) {
                                 </DropdownMenu>
                             </div>
                             <div className="flex-1">
-                                <h1>{bill.name}</h1>
+                                <h1 className={`font-bold ${bill.payment_date ? 'text-sky-500' : 'text-red-500'}`}>{bill.name}</h1>
                                 <span className="text-sm italic">Vence em {asDate(bill.expiration_date)}</span>
                             </div>
                             <div className="text-right">
-                                <div className={`font-bold ${bill.payment_date ? 'text-sky-500' : 'text-red-500'}`}>
+                                <div className={`${bill.payment_date ? 'text-sky-500' : 'text-red-500'}`}>
                                     <span>{asCurrency(bill.amount)}</span>
                                 </div>
                                 <div className="flex items-center">
