@@ -100,10 +100,12 @@ export default function Index({ ...props }) {
                                 </div>
                                 <div className="flex items-center">
                                     <span className="relative flex size-3">
-                                      <span className={`absolute inline-flex h-full w-full animate-ping rounded-full bg-${bill.payment_date ? 'sky' : 'red'}-400 opacity-75`}></span>
-                                      <span className={`relative inline-flex size-3 rounded-full bg-${bill.payment_date ? 'sky' : 'red'}-500`}></span>
+                                      <span
+                                          className={`absolute inline-flex h-full w-full animate-ping rounded-full bg-${bill.payment_date ? 'sky' : 'red'}-400 opacity-75`}></span>
+                                      <span
+                                          className={`relative inline-flex size-3 rounded-full bg-${bill.payment_date ? 'sky' : 'red'}-500`}></span>
                                     </span>
-                                    <span className='ml-1'>
+                                    <span className="ml-1">
                                         {bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : 'Pendente'}
                                     </span>
                                 </div>

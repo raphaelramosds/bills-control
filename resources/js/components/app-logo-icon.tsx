@@ -3,7 +3,7 @@ import { SVGAttributes } from 'react';
 export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
     return (
         <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
              className={props.className + " lucide lucide-dollar-sign-icon lucide-dollar-sign"}
         >
             <line x1="12" x2="12" y1="2" y2="22" />

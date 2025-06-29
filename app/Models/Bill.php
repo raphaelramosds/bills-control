@@ -32,8 +32,9 @@ class Bill extends Model
     {
         return Bill::select('expiration_date')
             ->orderBy('expiration_date')
-            ->distinct()
             ->get()
-            ->transform(fn($bill) => (new \DateTime($bill['expiration_date']))->format('Y-m'));
+            ->map(fn($bill) => (new \DateTime($bill['expiration_date']))->format('Y-m'))
+            ->unique()
+            ->values();
     }
 }

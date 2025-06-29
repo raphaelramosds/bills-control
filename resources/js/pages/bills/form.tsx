@@ -86,7 +86,7 @@ export default function Form({ ...props }) {
                         </div>
 
                         <div className="grid gap-2">
-                            <Label htmlFor="expiration_date">Data de pagamento</Label>
+                            <Label htmlFor="payment_date">Data de pagamento</Label>
                             <input id="payment_date"
                                    type="date"
                                    className="rounded border pl-2"
