@@ -1,4 +1,4 @@
-import GuestLayout from '@/layouts/guest-layout';
+import AppLayout from '@/layouts/app-layout';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import {
     DropdownMenu,
@@ -38,7 +38,7 @@ export default function Index({ ...props }) {
     };
 
     return (
-        <GuestLayout>
+        <AppLayout>
             <Head title="Listar contas" />
             <main className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
                 <header className="flex">
@@ -74,7 +74,7 @@ export default function Index({ ...props }) {
                                     </div>
 
                                     <div className="flex-1">
-                                        <h1 className={`${bill.payment_date ? 'text-sky-500' : 'text-red-500'}`}>{bill.name}</h1>
+                                        <h1>{bill.name}</h1>
                                         <span className="text-sm italic">
                                     {bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}
                                 </span>
@@ -125,6 +125,6 @@ export default function Index({ ...props }) {
                     </div>
                 </section>
             </main>
-        </GuestLayout>
+        </AppLayout>
     );
 }

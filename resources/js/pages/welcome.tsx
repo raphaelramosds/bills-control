@@ -16,35 +16,28 @@ export default function Welcome() {
                     <nav className="flex items-center justify-end gap-4">
                         {auth.user ? (
                             <Link
-                                href={route('dashboard')}
-                                className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                href={route('bills.index')}
+                                className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                             >
-                                Dashboard
+                                Contas
                             </Link>
                         ) : (
                             <>
                                 <Link
-                                    href={route('bills.index')}
-                                    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                                   href={route('login')}
+                                   className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                                 >
-                                    Contas
+                                   Log in
                                 </Link>
-                                <AppearanceToggleTab/>
-
-                                {/*<Link*/}
-                                {/*    href={route('login')}*/}
-                                {/*    className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"*/}
-                                {/*>*/}
-                                {/*    Log in*/}
-                                {/*</Link>*/}
-                                {/*<Link*/}
-                                {/*    href={route('register')}*/}
-                                {/*    className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"*/}
-                                {/*>*/}
-                                {/*    Register*/}
-                                {/*</Link>*/}
+                                <Link
+                                   href={route('register')}
+                                   className="inline-block rounded-sm border border-[#19140035] px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#1915014a] dark:border-[#3E3E3A] dark:text-[#EDEDEC] dark:hover:border-[#62605b]"
+                                >
+                                   Register
+                                </Link>
                             </>
                         )}
+                        <AppearanceToggleTab/>
                     </nav>
                 </header>
                 <div className="flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
@@ -54,7 +47,7 @@ export default function Welcome() {
                             <p className="mb-2 text-[#706f6c] dark:text-[#A1A09A]">
                                 Essa é uma tela de introdução para o meu sistema de controle de despesas.
                                 <br/>
-                                Você pode acessá-lo no botão "Contas" acima
+                                Você pode acessá-lo no botão "Contas" acima, caso possuir uma conta
                             </p>
                         </div>
                     </main>

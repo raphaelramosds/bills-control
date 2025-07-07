@@ -1,8 +1,6 @@
-import GuestLayout from '@/layouts/guest-layout';
+import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@headlessui/react';
 import { FormEventHandler } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { NumericFormat } from 'react-number-format';
@@ -39,7 +37,7 @@ export default function Form({ ...props }) {
     };
 
     return (
-        <GuestLayout>
+        <AppLayout>
             <Head title="Cadastrar conta" />
             <main className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
                 <form className="flex flex-col" onSubmit={submit}>
@@ -122,6 +120,6 @@ export default function Form({ ...props }) {
 
                 </form>
             </main>
-        </GuestLayout>
+        </AppLayout>
     );
 }
