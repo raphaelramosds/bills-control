@@ -7,7 +7,7 @@ import {
     DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { EllipsisVertical } from 'lucide-react';
-import React, { FormEventHandler } from 'react';
+import React, { FormEventHandler, useState } from 'react';
 import { asCurrency, asDate, asMonthYear } from '@/lib/utils';
 import {
     Select,
@@ -17,10 +17,15 @@ import {
     SelectValue
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import Form from './form';
 
 export default function Index({ ...props }) {
 
     const { delete: destroy, get } = useForm();
+
+    const [openFormDialog, setOpenFormDialog] = useState(false);
+    const [selectedBill, setSelectedBill] = useState({});
 
     const handleDelete = (id: number) => {
         destroy(route('bills.destroy', id));
@@ -30,7 +35,7 @@ export default function Index({ ...props }) {
         get(route('bills.index', { month }), { preserveScroll: true, preserveState: true });
     };
 
-    const handlerClear = () => {
+    const handleClear = () => {
         get(route('bills.index'), {
             preserveScroll: true,
             preserveState: true
@@ -43,12 +48,15 @@ export default function Index({ ...props }) {
             <main className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
                 <header className="flex">
                     <h1 className="font-bold text-lg flex-1">Listar contas</h1>
-                    <Link
-                        href={route('bills.create')}
-                        className="w-[180px] rounded-sm border text-center px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
+                    <button
+                        onClick={() => {
+                            setSelectedBill({});
+                            setOpenFormDialog(true);
+                        }}
+                        className="cursor-pointer w-[180px] rounded-sm border text-center px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-[#EDEDEC] dark:hover:border-[#3E3E3A]"
                     >
                         Cadastrar
-                    </Link>
+                    </button>
                 </header>
                 <section className="flex gap-4">
                     <div className="flex flex-col gap-2 flex-1">
@@ -61,23 +69,23 @@ export default function Index({ ...props }) {
                                             <span>{asCurrency(bill.amount)}</span>
                                         </div>
                                         <div className="flex items-center">
-                                    <span className="relative flex size-3">
-                                      <span
-                                          className={`absolute inline-flex h-full w-full animate-ping rounded-full ${bill.payment_date ? 'bg-sky-400' : 'bg-red-400'} opacity-75`}></span>
-                                      <span
-                                          className={`relative inline-flex size-3 rounded-full ${bill.payment_date ? 'bg-sky-500' : 'bg-red-500'}`}></span>
-                                    </span>
+                                            <span className="relative flex size-3">
+                                                <span
+                                                    className={`absolute inline-flex h-full w-full animate-ping rounded-full ${bill.payment_date ? 'bg-sky-400' : 'bg-red-400'} opacity-75`}></span>
+                                                <span
+                                                    className={`relative inline-flex size-3 rounded-full ${bill.payment_date ? 'bg-sky-500' : 'bg-red-500'}`}></span>
+                                            </span>
                                             <span className="ml-1">
-                                        {bill.payment_date ? `Pago` : 'Pendente'}
-                                    </span>
+                                                {bill.payment_date ? `Pago` : 'Pendente'}
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div className="flex-1">
                                         <h1>{bill.name}</h1>
                                         <span className="text-sm italic">
-                                    {bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}
-                                </span>
+                                            {bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}
+                                        </span>
                                     </div>
 
                                     <div className="flex items-center">
@@ -91,7 +99,10 @@ export default function Index({ ...props }) {
                                             >
                                                 <DropdownMenuItem
                                                     className="cursor-pointer"
-                                                    onSelect={() => router.visit(route('bills.edit', bill.id))}
+                                                    onSelect={() => {
+                                                        setOpenFormDialog(true);
+                                                        setSelectedBill(bill);
+                                                    }}
                                                 >
                                                     Editar
                                                 </DropdownMenuItem>
@@ -103,6 +114,17 @@ export default function Index({ ...props }) {
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
+
+                                        <Dialog open={openFormDialog} onOpenChange={setOpenFormDialog}>
+                                            <DialogContent>
+                                                <DialogHeader>
+                                                    <DialogTitle>{Object.keys(selectedBill).length === 0 ? 'Cadastrar conta' : 'Modificar conta'}</DialogTitle>
+                                                    <DialogDescription>
+                                                        <Form bill={selectedBill}/>
+                                                    </DialogDescription>
+                                                </DialogHeader>
+                                            </DialogContent>
+                                        </Dialog>
                                     </div>
                                 </div>
                             ))
@@ -115,11 +137,11 @@ export default function Index({ ...props }) {
                             </SelectTrigger>
                             <SelectContent>
                                 {props.months.map((month) => <SelectItem key={month}
-                                                                         value={month}>{asMonthYear(month)}</SelectItem>)}
+                                    value={month}>{asMonthYear(month)}</SelectItem>)}
                             </SelectContent>
                         </Select>
                         <Button className="w-full cursor-pointer mt-3" type="button" variant="outline"
-                                onClick={handlerClear}>
+                            onClick={handleClear}>
                             Redefinir
                         </Button>
                     </div>
