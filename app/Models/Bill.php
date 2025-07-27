@@ -54,7 +54,7 @@ class Bill extends Model
             ->pluck('payment_total')
             ->sum();
 
-        $pending = bcsub($total, $paid);
+        $pending = bcsub($total, $paid, 2);
 
         return [
             'paid' => $paid,

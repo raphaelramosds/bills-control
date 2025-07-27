@@ -35,11 +35,16 @@ export default function Form({ bill }: FormProps) {
 
         if (bill.id) {
             patch(route('bills.update', bill.id), {
-                onSuccess: () => console.log('Dados da conta atualizados'),
+                onSuccess: () => {
+                    console.log('Dados da conta atualizados');
+                },
             });
         } else {
             post(route('bills.store'), {
-                onSuccess: () => console.log('Dados da conta submetidos'),
+                onSuccess: () => {
+                    console.log('Dados da conta submetidos');
+                    reset();
+                },
             });
         }
     };

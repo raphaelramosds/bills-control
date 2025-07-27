@@ -65,7 +65,7 @@ export default function Index({ ...props }: IndexProps) {
                                 <tr>
                                     <th className="py-2 text-left">Descrição</th>
                                     <th className="text-left">Valor</th>
-                                    <th className="text-left">Status</th>
+                                    <th className="text-left">Situação</th>
                                     <th></th>
                                 </tr>
                             </thead>
