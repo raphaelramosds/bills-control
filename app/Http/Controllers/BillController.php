@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBillRequest;
 use App\Models\Bill;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,9 +41,13 @@ class BillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) : RedirectResponse
+    public function store(StoreBillRequest $request) : RedirectResponse
     {
-        $bill = Bill::create($request->all());
+        $validated = $request->validated();
+
+        $bill = new Bill($validated);
+        $bill->save();
+
         return to_route('bills.index');
     }
 

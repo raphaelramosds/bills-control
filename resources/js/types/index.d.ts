@@ -41,3 +41,12 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface Bill {
+    id ?: number;
+    name: string;
+    amount: number | string;
+    expiration_date: string;
+    payment_date?: string;
+    notes ?: string;
+}
