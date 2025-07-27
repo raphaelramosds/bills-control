@@ -5,7 +5,7 @@ export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs));
 }
 
-export function asCurrency(number: number) {
+export function asCurrency(number: number | string) {
     return 'R$ ' + new Intl.NumberFormat('pt-BR', { minimumFractionDigits: 2, currency: 'BRL' }).format(
         number
     );

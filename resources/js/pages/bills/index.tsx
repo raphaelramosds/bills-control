@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 import Form from './form';
 import { Bill } from '@/types';
-import { Edit, Table, Trash } from 'lucide-react';
+import { Edit, Trash } from 'lucide-react';
 
 interface IndexProps {
     bills: Array<Bill>;
