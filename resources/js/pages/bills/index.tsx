@@ -1,11 +1,5 @@
 import AppLayout from '@/layouts/app-layout';
-import { Head, Link, router, useForm } from '@inertiajs/react';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import { asCurrency, asDate, asMonthYear } from '@/lib/utils';
 import {
@@ -19,14 +13,19 @@ import {
     Dialog,
     DialogContent,
     DialogHeader,
-    DialogTitle,
+    DialogTitle
 } from '@/components/ui/dialog';
 import Form from './form';
 import { Bill } from '@/types';
+import { Edit, Table, Trash } from 'lucide-react';
 
 interface IndexProps {
     bills: Array<Bill>;
     months: Array<string>;
+    totals: {
+        paid: number,
+        pending: number
+    };
 }
 
 export default function Index({ ...props }: IndexProps) {
@@ -59,54 +58,50 @@ export default function Index({ ...props }: IndexProps) {
         <AppLayout>
             <Head title="Listar contas" />
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
-                <header className="flex">
-                    <h1 className="font-bold text-lg flex-1">Listar contas</h1>
-                </header>
-                <section className="flex gap-4 ">
-                    <div className="flex flex-col gap-2 flex-1 border rounded-xl">
-                        {props.bills.length > 0 ?
-                            props.bills.map(bill => (
-                                <div className="flex p-3 gap-7 rounded" key={bill.id}>
-
-                                    <div className="flex-1">
-                                        <h1>{bill.name}</h1>
-                                    </div>
-
-                                    <div className="flex items-center">
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger asChild>
-                                                <button
-                                                    className={`cursor-pointer rounded text-sm text-white/80 ${bill.payment_date ? 'bg-chart-2/80' : 'bg-red-500/80'} p-1`}>
-                                                    <span>
-                                                        {bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}
-                                                    </span>
-                                                </button>
-                                            </DropdownMenuTrigger>
-                                            <DropdownMenuContent
-                                                className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                                                align="end"
-                                            >
-                                                <DropdownMenuItem
-                                                    className="cursor-pointer"
-                                                    onSelect={() => {
-                                                        setOpenFormDialog(true);
-                                                        setSelectedBill(bill);
-                                                    }}
-                                                >
-                                                    Editar
-                                                </DropdownMenuItem>
-                                                <DropdownMenuItem
-                                                    className="text-red-500 cursor-pointer"
-                                                    onSelect={() => handleDelete(bill.id)}
-                                                >
-                                                    Excluir
-                                                </DropdownMenuItem>
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    </div>
-                                </div>
-                            ))
-                            : <div>Nenhuma conta foi cadastrada</div>}
+                <section className="flex gap-4">
+                    <div className="flex flex-col gap-2 flex-1 border rounded-xl p-4">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th className="py-2 text-left">Descrição</th>
+                                    <th className="text-left">Valor</th>
+                                    <th className="text-left">Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {props.bills.length > 0 ?
+                                    props.bills.map(bill => (
+                                        <tr key={bill.id}>
+                                            <td className="py-2">{bill.name}</td>
+                                            <td>{asCurrency(bill.amount)}</td>
+                                            <td>
+                                                <span
+                                                    className={`font-bold uppercase rounded text-sm ${bill.payment_date ? 'text-chart-2' : 'text-red-500'} p-1`}
+                                                >{bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}</span>
+                                            </td>
+                                            <td>
+                                                <div className="grid grid-cols-2">
+                                                    <Edit
+                                                        className="cursor-pointer"
+                                                        size={16}
+                                                        onClick={() => {
+                                                            setOpenFormDialog(true);
+                                                            setSelectedBill(bill);
+                                                        }}
+                                                    />
+                                                    <Trash
+                                                        className="cursor-pointer text-red-500"
+                                                        size={16}
+                                                        onClick={() => handleDelete(bill.id)}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))
+                                    : ''}
+                            </tbody>
+                        </table>
                         <Dialog open={openFormDialog} onOpenChange={setOpenFormDialog}>
                             <DialogContent aria-describedby={undefined}>
                                 <DialogHeader>
@@ -155,9 +150,8 @@ export default function Index({ ...props }: IndexProps) {
                                 <span className="text-sm">Totais</span>
                             </div>
                             <div className="w-full flex">
-                                <span className="rounded-l-lg flex-1 bg-chart-2 text-sm text-center text-white p-1">R$ 12,90</span>
-                                <span
-                                    className="rounded-r-lg bg-red-500 text-sm text-center text-white p-1">R$ 1902,90</span>
+                                <span className="rounded-l-lg flex-1 bg-chart-2 text-sm text-center text-white p-1">{asCurrency(props.totals.paid)}</span>
+                                <span className="rounded-r-lg flex-1 bg-red-500 text-sm text-center text-white p-1">{asCurrency(props.totals.pending)}</span>
                             </div>
                         </div>
                     </aside>

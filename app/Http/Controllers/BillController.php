@@ -27,6 +27,7 @@ class BillController extends Controller
         return Inertia::render('bills/index', [
             'bills' => $bills->get(),
             'months' => Bill::months(),
+            'totals' => Bill::totals($bills->get())
         ]);
     }
 
