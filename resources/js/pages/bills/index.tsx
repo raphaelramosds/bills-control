@@ -61,9 +61,8 @@ export default function Index({ ...props }: IndexProps) {
     };
 
     useEffect(() => {
-        var routeHelper = route('bills.index', { ...searchParams });
-        var options = { preserveScroll: true, preserveState: true };
-        get(routeHelper, options);
+        if (equals(searchParams, defaultSearchParams)) return;
+        get(route('bills.index', { ...searchParams }), { preserveScroll: true, preserveState: true });
     }, [searchParams]);
 
     return (
