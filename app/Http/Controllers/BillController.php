@@ -37,8 +37,7 @@ class BillController extends Controller
 
         $bill = new Bill($validated);
         $bill->save();
-
-        return to_route('bills.index');
+        // return to_route('bills.index');
     }
 
     /**
@@ -65,7 +64,7 @@ class BillController extends Controller
     {
         $bill = Bill::findOrFail($id);
         $bill->update($request->all());
-        return to_route('bills.index');
+        // return to_route('bills.index');
     }
 
     /**
