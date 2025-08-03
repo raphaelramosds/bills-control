@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { asCurrency, asDate, asMonthYear, equals } from '@/lib/utils';
 import {
     Select,
@@ -19,6 +19,19 @@ import Form from './form';
 import { Bill } from '@/types';
 import { Edit, Trash } from 'lucide-react';
 
+interface I18n {
+    description: string;
+    expiration_date: string;
+    value: string;
+    status: string;
+    filters: string;
+    order_by: string;
+    clear: string;
+    new_bill: string;
+    update_bill: string;
+    totals: string;
+}
+
 interface IndexProps {
     bills: Array<Bill>;
     months: Array<string>;
@@ -26,6 +39,7 @@ interface IndexProps {
         paid: number,
         pending: number
     };
+    i18n: I18n
 }
 
 interface SearchParams {
@@ -74,9 +88,9 @@ export default function Index({ ...props }: IndexProps) {
                         <table>
                             <thead>
                                 <tr>
-                                    <th className="py-2 text-left">Descrição</th>
-                                    <th className="text-left">Valor</th>
-                                    <th className="text-left">Situação</th>
+                                    <th className="py-2 text-left">{props.i18n.description}</th>
+                                    <th className="text-left">{props.i18n.value}</th>
+                                    <th className="text-left">{props.i18n.status}</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -116,7 +130,7 @@ export default function Index({ ...props }: IndexProps) {
                         <Dialog open={openFormDialog} onOpenChange={setOpenFormDialog}>
                             <DialogContent aria-describedby={undefined}>
                                 <DialogHeader>
-                                    <DialogTitle>{!selectedBill.id ? 'Cadastrar conta' : 'Modificar conta'}</DialogTitle>
+                                    <DialogTitle>{!selectedBill.id ? props.i18n.new_bill : props.i18n.update_bill}</DialogTitle>
                                 </DialogHeader>
                                 <Form bill={selectedBill} />
                             </DialogContent>
@@ -125,19 +139,19 @@ export default function Index({ ...props }: IndexProps) {
                     <aside className="flex flex-col gap-3 w-1/4 max-h-fit">
                         <div className="flex flex-col gap-3 rounded border p-3">
                             <div>
-                                <span className="text-sm">Filtros</span>
+                                <span className="text-sm">{props.i18n.filters}</span>
                             </div>
                             <Select onValueChange={(order) => setSearchParams({ ...searchParams, order })}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Ordenar por" />
+                                    <SelectValue placeholder={props.i18n.order_by} />
                                 </SelectTrigger>
                                 <SelectContent>
-                                    <SelectItem key="expiration_date" value="expiration_date">Vencimento</SelectItem>
+                                    <SelectItem key="expiration_date" value="expiration_date">{props.i18n.expiration_date}</SelectItem>
                                 </SelectContent>
                             </Select>
                             <Select onValueChange={(month) => setSearchParams({ ...searchParams, month })}>
                                 <SelectTrigger>
-                                    <SelectValue placeholder="Vencimento" />
+                                    <SelectValue placeholder={props.i18n.expiration_date} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {props.months.map((month) => <SelectItem key={month}
@@ -148,7 +162,7 @@ export default function Index({ ...props }: IndexProps) {
                                 className="cursor-pointer w-full rounded-sm border text-center px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-white dark:hover:border-[#3E3E3A] dark:bg-input"
                                 type="button"
                                 onClick={handleClear}>
-                                Redefinir
+                                {props.i18n.clear}
                             </button>
                             <button
                                 onClick={() => {
@@ -161,12 +175,12 @@ export default function Index({ ...props }: IndexProps) {
                                 }}
                                 className="cursor-pointer w-full rounded-sm border text-center px-5 py-1.5 text-sm leading-normal text-[#1b1b18] hover:border-[#19140035] dark:text-white dark:hover:border-[#3E3E3A] dark:bg-chart-2"
                             >
-                                Nova conta
+                                {props.i18n.new_bill}
                             </button>
                         </div>
                         <div className="flex gap-3 flex-col rounded border p-3">
                             <div>
-                                <span className="text-sm">Totais</span>
+                                <span className="text-sm">{props.i18n.totals}</span>
                             </div>
                             <div className="w-full flex">
                                 <span className="rounded-l-lg flex-1 bg-chart-2 text-sm text-center text-white p-1">{asCurrency(props.totals.paid)}</span>
