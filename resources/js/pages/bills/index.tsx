@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head, useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
-import { asCurrency, asDate, asMonthYear } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
+import { asCurrency, asDate, asMonthYear, equals } from '@/lib/utils';
 import {
     Select,
     SelectContent,
@@ -28,31 +28,43 @@ interface IndexProps {
     };
 }
 
+interface SearchParams {
+    month: string;
+    order: string;
+}
+
+var defaultSearchParams = {
+    month: '',
+    order: ''
+};
+
+var defaultSelectedBill = {
+    name: '',
+    amount: 0,
+    expiration_date: ''
+};
+
 export default function Index({ ...props }: IndexProps) {
 
     const { delete: destroy, get } = useForm();
 
     const [openFormDialog, setOpenFormDialog] = useState(false);
-    const [selectedBill, setSelectedBill] = useState<Bill>({
-        name: '',
-        amount: 0,
-        expiration_date: ''
-    });
+    const [searchParams, setSearchParams] = useState<SearchParams>(defaultSearchParams);
+    const [selectedBill, setSelectedBill] = useState<Bill>(defaultSelectedBill);
 
     const handleDelete = (id: number | undefined) => {
         destroy(route('bills.destroy', id));
     };
 
-    const handleMonthSearch = (month: string) => {
-        get(route('bills.index', { month }), { preserveScroll: true, preserveState: true });
+    const handleClear = () => {
+        get(route('bills.index'), { preserveScroll: true, preserveState: false });
     };
 
-    const handleClear = () => {
-        get(route('bills.index'), {
-            preserveScroll: true,
-            preserveState: false
-        });
-    };
+    useEffect(() => {
+        var routeHelper = route('bills.index', { ...searchParams });
+        var options = { preserveScroll: true, preserveState: true };
+        get(routeHelper, options);
+    }, [searchParams]);
 
     return (
         <AppLayout>
@@ -77,7 +89,7 @@ export default function Index({ ...props }: IndexProps) {
                                             <td>{asCurrency(bill.amount)}</td>
                                             <td>
                                                 <span
-                                                    className={`font-bold uppercase rounded text-sm ${bill.payment_date ? 'text-chart-2' : 'text-red-500'} p-1`}
+                                                    className={`font-bold rounded text-sm ${bill.payment_date ? 'text-chart-2' : 'text-red-500'} p-1`}
                                                 >{bill.payment_date ? `Pago em ${asDate(bill.payment_date)}` : `Vence em ${asDate(bill.expiration_date)}`}</span>
                                             </td>
                                             <td>
@@ -116,13 +128,21 @@ export default function Index({ ...props }: IndexProps) {
                             <div>
                                 <span className="text-sm">Filtros</span>
                             </div>
-                            <Select onValueChange={handleMonthSearch}>
+                            <Select onValueChange={(order) => setSearchParams({ ...searchParams, order })}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Ordenar por" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem key="expiration_date" value="expiration_date">Vencimento</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <Select onValueChange={(month) => setSearchParams({ ...searchParams, month })}>
                                 <SelectTrigger>
                                     <SelectValue placeholder="Vencimento" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {props.months.map((month) => <SelectItem key={month}
-                                                                             value={month}>{asMonthYear(month)}</SelectItem>)}
+                                        value={month}>{asMonthYear(month)}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                             <button

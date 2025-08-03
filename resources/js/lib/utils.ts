@@ -32,3 +32,7 @@ export function asMonthYear(str: string | null | undefined) {
 
     return date.toLocaleDateString('pt-BR', { month: '2-digit', year: 'numeric' });
 }
+
+export function equals (arr1: Object, arr2: Object) : boolean {
+    return JSON.stringify(arr1) === JSON.stringify(arr2);
+}

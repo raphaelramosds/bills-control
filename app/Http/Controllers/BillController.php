@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreBillRequest;
 use App\Models\Bill;
+use App\Services\BillService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,21 +15,9 @@ class BillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) : Response
+    public function index(Request $request, BillService $billService) : Response
     {
-        $bills = Bill::query();
-
-        if ($request->has('month')) {
-            [$year, $month] = explode('-', $request->get('month'));
-            $bills->whereYear('expiration_date', $year)
-                ->whereMonth('expiration_date', $month);
-        }
-
-        return Inertia::render('bills/index', [
-            'bills' => $bills->get(),
-            'months' => Bill::months(),
-            'totals' => Bill::totals($bills->get())
-        ]);
+        return Inertia::render('bills/index', $billService->index($request));
     }
 
     /**
