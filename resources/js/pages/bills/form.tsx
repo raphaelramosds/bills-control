@@ -1,10 +1,10 @@
-import AppLayout from '@/layouts/app-layout';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
 import { FormEventHandler } from 'react';
 import { LoaderCircle } from 'lucide-react';
 import { NumericFormat } from 'react-number-format';
 import { Bill } from '@/types';
+import { ToastContainer, toast } from 'react-toastify';
 import InputError from '@/components/input-error';
 
 type BillForm = {
@@ -36,13 +36,13 @@ export default function Form({ bill }: FormProps) {
         if (bill.id) {
             patch(route('bills.update', bill.id), {
                 onSuccess: () => {
-                    console.log('Dados da conta atualizados');
+                    toast.success('Conta atualizada');
                 },
             });
         } else {
             post(route('bills.store'), {
                 onSuccess: () => {
-                    console.log('Dados da conta submetidos');
+                    toast.success('Conta cadastrada');
                     reset();
                 },
             });
@@ -51,6 +51,9 @@ export default function Form({ bill }: FormProps) {
 
     return (
         <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-10">
+            <ToastContainer 
+                autoClose={1000}
+            />
             <form className="flex flex-col gap-4" onSubmit={submit}>
                 <div className="grid gap-2">
                     <Label htmlFor="name">Descrição</Label>
